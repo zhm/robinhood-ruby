@@ -38,6 +38,10 @@ module Robinhood
 
           watchlists:               api_url + "watchlists/",
           positions:                api_url + "positions/",
+          options_positions:        api_url + "options/positions/",
+          options_orders:           api_url + "options/orders/",
+          options_aggregate_positions: api_url + "options/aggregate_positions/",
+          marketdata_options:       api_url + "marketdata/options/",
           fundamentals:             api_url + "fundamentals/",
           sp500_up:                 api_url + "midlands/movers/sp500/?direction=up",
           sp500_down:               api_url + "midlands/movers/sp500/?direction=down",

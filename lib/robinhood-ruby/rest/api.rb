@@ -41,6 +41,11 @@ module Robinhood
         JSON.parse(raw_response.body)
       end
 
+      def options_orders
+        raw_response = HTTParty.get(endpoints[:options_orders], headers: headers)
+        JSON.parse(raw_response.body)
+      end
+
       def buy(symbol, instrument_id, price, quantity)
         raw_response = HTTParty.post(
           endpoints[:orders],
@@ -142,7 +147,22 @@ module Robinhood
       end
 
       def positions
-        raw_response = HTTParty.get(endpoints[:positions], headers: headers)
+        raw_response = HTTParty.get(endpoints[:positions], query: {'nonzero' => 'True'}, headers: headers)
+        JSON.parse(raw_response.body)
+      end      
+
+      def options_positions
+        raw_response = HTTParty.get(endpoints[:options_positions], query: {'nonzero' => 'True'}, headers: headers)
+        JSON.parse(raw_response.body)
+      end      
+
+      def options_aggregate_positions
+        raw_response = HTTParty.get(endpoints[:options_aggregate_positions], query: {'nonzero' => 'True'}, headers: headers)
+        JSON.parse(raw_response.body)
+      end      
+
+      def marketdata_options(instruments)
+        raw_response = HTTParty.get(endpoints[:marketdata_options], query: {'instruments' => instruments.join(',')}, headers: headers)
         JSON.parse(raw_response.body)
       end      
 
@@ -187,6 +207,11 @@ module Robinhood
 
       def historicals(symbol, intv, span)
         raw_response = HTTParty.get(endpoints[:quotes] + "historicals/" + symbol, query: {"interval" => intv.to_s, "span" => span}, headers: headers)
+        JSON.parse(raw_response.body)
+      end
+
+      def get(url, query = nil)
+        raw_response = HTTParty.get(url, query: query, headers: headers)
         JSON.parse(raw_response.body)
       end
      

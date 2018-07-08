@@ -63,12 +63,41 @@ module Robinhood
       def setup_headers
         @headers ||= {
           "Accept" => "*/*",
-          "Connection" => "keep-alive",
-          # "Accept-Encoding" => "gzip, deflate",
+          "Connection" => "keep-alive"
         }
       end
 
       def login
+        @private[:username] = @options[:username]
+        @private[:password] = @options[:password]
+
+        if @private[:auth_token].nil?
+          raw_response = HTTParty.post(
+            @api_url + "oauth2/token/",
+            body: {
+              "password" => @private[:password],
+              "username" => @private[:username],
+              "expires_in" => 31536000,
+              "client_id" => "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS",
+              "grant_type" => "password",
+              "scope" => "internal"
+            }.as_json,
+            headers: @headers
+          )
+
+          response = JSON.parse(raw_response.body)
+
+          if response["non_field_errors"]
+            puts response["non_field_errors"]
+            false
+          elsif response["access_token"]
+            @private[:auth_token] = response["access_token"]
+            @headers["Authorization"] = "Bearer " + @private[:auth_token].to_s
+          end
+        end
+      end
+
+      def login_legacy
         @private[:username] = @options[:username]
         @private[:password] = @options[:password]
 
