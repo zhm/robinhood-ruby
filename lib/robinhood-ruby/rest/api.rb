@@ -41,8 +41,8 @@ module Robinhood
         JSON.parse(raw_response.body)
       end
 
-      def options_orders
-        raw_response = HTTParty.get(endpoints[:options_orders], headers: headers)
+      def options_orders(query=nil)
+        raw_response = HTTParty.get(endpoints[:options_orders], query: query, headers: headers)
         JSON.parse(raw_response.body)
       end
 
@@ -183,6 +183,11 @@ module Robinhood
 
       def sp500_down
         raw_response = HTTParty.get(endpoints[:sp500_down], headers: headers)
+        JSON.parse(raw_response.body)
+      end      
+
+      def portfolios
+        raw_response = HTTParty.get(endpoints[:portfolios], headers: headers)
         JSON.parse(raw_response.body)
       end      
 
