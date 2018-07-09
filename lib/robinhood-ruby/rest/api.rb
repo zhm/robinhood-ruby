@@ -5,7 +5,7 @@ module Robinhood
         raw_response = HTTParty.get(endpoints[:accounts], headers: headers)
         JSON.parse(raw_response.body)
       end
-      
+
       def investment_profile
         raw_response = HTTParty.get(endpoints[:investment_profile], headers: headers)
         JSON.parse(raw_response.body)
@@ -149,47 +149,68 @@ module Robinhood
       def positions
         raw_response = HTTParty.get(endpoints[:positions], query: {'nonzero' => 'True'}, headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       def options_positions
         raw_response = HTTParty.get(endpoints[:options_positions], query: {'nonzero' => 'True'}, headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       def options_aggregate_positions
         raw_response = HTTParty.get(endpoints[:options_aggregate_positions], query: {'nonzero' => 'True'}, headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       def marketdata_options(instruments)
         raw_response = HTTParty.get(endpoints[:marketdata_options], query: {'instruments' => instruments.join(',')}, headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
+
+      def chains(instruments)
+        query = {
+          'equity_instrument_ids' => instruments.join(',')
+        }
+
+        raw_response = HTTParty.get(endpoints[:chains], query: query, headers: headers)
+        JSON.parse(raw_response.body)
+      end
+
+      def options(chain, dates, type)
+        query = {
+          'chain_id' => chain,
+          'expiration_dates' => dates,
+          'state' => 'active',
+          'tradability' => 'tradable',
+          'type' => type
+        }
+        raw_response = HTTParty.get(endpoints[:options], query: query, headers: headers)
+        JSON.parse(raw_response.body)
+      end
 
       def news(symbol)
         raw_response = HTTParty.get(endpoints[:news] + symbol.to_s + "/", headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       def markets
         raw_response = HTTParty.get(endpoints[:markets], headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       def sp500_up
         raw_response = HTTParty.get(endpoints[:sp500_up], headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       def sp500_down
         raw_response = HTTParty.get(endpoints[:sp500_down], headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       def portfolios
         raw_response = HTTParty.get(endpoints[:portfolios], headers: headers)
         JSON.parse(raw_response.body)
-      end      
+      end
 
       # def create_watch_list(name, callback)
       # return _request.post({
@@ -219,7 +240,7 @@ module Robinhood
         raw_response = HTTParty.get(url, query: query, headers: headers)
         JSON.parse(raw_response.body)
       end
-     
+
       private
 
       def headers

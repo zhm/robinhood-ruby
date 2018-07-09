@@ -37,6 +37,8 @@ module Robinhood
           user_investment_profile:  api_url + "user/investment_profile/",
 
           watchlists:               api_url + "watchlists/",
+          chains:                   api_url + "options/chains/",
+          options:                  api_url + "options/instruments/",
           positions:                api_url + "positions/",
           portfolios:               api_url + "portfolios/",
           options_positions:        api_url + "options/positions/",
